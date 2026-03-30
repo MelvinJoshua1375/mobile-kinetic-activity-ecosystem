@@ -45,6 +45,6 @@ app.include_router(predict.router)
 app.include_router(experiments.router)
 
 
-@app.get("/")
+@app.get("/api")
 def root():
     return {"message": "Mobile Health Sensor Segmentation API — see /docs"}
