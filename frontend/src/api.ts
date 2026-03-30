@@ -3,7 +3,7 @@
  * Set VITE_API_URL in .env (defaults to localhost:8000 for dev).
  */
 
-const BASE = import.meta.env.VITE_API_URL ?? "";
+const BASE = import.meta.env.VITE_API_URL ?? "https://mhs-api.vercel.app";
 
 async function get<T>(path: string, params?: Record<string, string | number | undefined>): Promise<T> {
   const url = new URL(BASE + path);
