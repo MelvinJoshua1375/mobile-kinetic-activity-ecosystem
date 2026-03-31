@@ -83,11 +83,27 @@ for algo_name, algo_fn in ALGORITHMS.items():
 
             print(f"  k={k:2d}  sil={sil:.4f}" + (f"  wssse={wssse:,.0f}" if wssse else ""))
 
-            if algo_name == "KMeans" and sil > best["silhouette"]:
-                best = {"algo": algo_name, "k": k, "silhouette": sil,
-                        "model": model, "preds": preds}
+            if algo_name == "KMeans":
+                sils.append(sil)
+                wssses.append(wssse)
 
-print(f"\nBest KMeans: k={best['k']}  silhouette={best['silhouette']:.4f}")
+# Find optimal k via elbow method (largest second derivative of WSSSE curve)
+kmeans_results = [(r["k"], r["wssse"]) for r in results if r["algo"] == "KMeans" and "wssse" in r]
+kmeans_results.sort()
+ws = [w for _, w in kmeans_results]
+# Second differences: acceleration of WSSSE decrease
+diffs2 = [ws[i-1] - 2*ws[i] + ws[i+1] for i in range(1, len(ws)-1)]
+elbow_idx = diffs2.index(max(diffs2)) + 1  # +1 because diffs2 starts at index 1
+optimal_k = kmeans_results[elbow_idx][0]
+print(f"\nElbow method: optimal k={optimal_k}")
+
+# Re-fit with optimal k
+optimal_model = KMeans(k=optimal_k, seed=SEED, featuresCol="features").fit(df)
+optimal_preds = optimal_model.transform(df)
+optimal_sil   = evaluator.evaluate(optimal_preds)
+best = {"algo": "KMeans", "k": optimal_k, "silhouette": optimal_sil,
+        "model": optimal_model, "preds": optimal_preds}
+print(f"Best KMeans: k={best['k']}  silhouette={best['silhouette']:.4f}")
 
 # COMMAND ----------
 # MAGIC %md ## 3. Save best model

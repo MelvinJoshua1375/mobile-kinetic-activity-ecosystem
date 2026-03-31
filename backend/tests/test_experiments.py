@@ -7,7 +7,7 @@ def test_experiments_all(client):
     data = resp.json()
     assert "runs" in data
     assert "best_run" in data
-    assert len(data["runs"]) == 4   # matches MOCK_EXPERIMENT_RESULTS
+    assert len(data["runs"]) == 6   # matches MOCK_EXPERIMENT_RESULTS
 
 
 def test_experiments_filter_algo(client):
@@ -21,7 +21,7 @@ def test_experiments_best_is_kmeans(client):
     resp = client.get("/api/experiments")
     best = resp.json()["best_run"]
     assert best["algo"] == "KMeans"
-    assert best["silhouette"] == 0.28   # highest KMeans silhouette in mock
+    assert best["k"] == 5   # elbow method picks k=5 from mock data
 
 
 def test_experiments_run_structure(client):

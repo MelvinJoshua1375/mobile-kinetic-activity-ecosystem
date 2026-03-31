@@ -73,7 +73,9 @@ MOCK_IQR_BOUNDS = {
 
 MOCK_EXPERIMENT_RESULTS = [
     {"algo": "KMeans", "k": 2, "silhouette": 0.25, "wssse": 5000000},
+    {"algo": "KMeans", "k": 3, "silhouette": 0.24, "wssse": 4000000},
     {"algo": "KMeans", "k": 5, "silhouette": 0.28, "wssse": 2500000},
+    {"algo": "KMeans", "k": 7, "silhouette": 0.22, "wssse": 2200000},
     {"algo": "BisectingKMeans", "k": 5, "silhouette": 0.26},
     {"algo": "GaussianMixture", "k": 5, "silhouette": 0.22},
 ]
@@ -106,6 +108,6 @@ def mock_artifacts(tmp_path, monkeypatch):
 
 @pytest.fixture
 def client(mock_artifacts):
-    from app.main import app
+    from app.server import app
     with TestClient(app) as c:
         yield c

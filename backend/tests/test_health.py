@@ -14,7 +14,7 @@ def test_health_degraded_when_no_artifacts(monkeypatch):
     art_module._artifacts = None   # reset so get_artifacts raises
 
     from fastapi.testclient import TestClient
-    from app.main import app
+    from app.server import app
     # Bypass lifespan (don't call load_artifacts)
     with TestClient(app, raise_server_exceptions=False) as c:
         resp = c.get("/api/health")
