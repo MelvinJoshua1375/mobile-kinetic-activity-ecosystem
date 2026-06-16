@@ -1,4 +1,4 @@
-# Mobile Health Sensor Segmentation
+# Mobile Kinetic Activity Ecosystem
 
 Industry-grade rewrite of a PySpark K-Means clustering pipeline for mobile health sensor data. Analyzes accelerometer, gyroscope, and rotation sensor data from 10 subjects performing 13 activities.
 
